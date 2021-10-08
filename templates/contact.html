@@ -42,7 +42,37 @@
   </div>
 </nav>
 <body>
+  <h2 class="my-4 mx-5">Facing any issues? Contact us and we will be happy to help !</h2>
+<div class="container">
+<form action="/contact/" method="post">{% csrf_token %}
+  <div class="mb-3">
+    <label for="name" class="form-label">Name</label>
+    <input type="name" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" name="name">
+  </div>
 
+  <div class="mb-3">
+    <label for="email" class="form-label">Email ID</label>
+    <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" name="email">
+  </div>
+
+  <div class="mb-3">
+    <label for="mobile" class="form-label">Mobile/Contact Number</label>
+    <input type="tel" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" name="mobile">
+  </div>
+
+  <div class="mb-3">
+    <label for="name" class="form-label">Subject</label>
+    <input type="name" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" name="subject">
+  </div>
+
+  <div class="mb-3">
+    <label for="name" class="form-label" id="message">How can we Help you ?</label><br>
+    <textarea name="message" style="margin-top: 0px;margin-bottom: 0px;height: 112px;width: 1300px;"></textarea>
+  </div>
+  
+  <button type="submit" class="btn btn-primary">Submit</button>
+</form>
+</div>
 
 
 
