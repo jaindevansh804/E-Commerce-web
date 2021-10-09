@@ -16,6 +16,14 @@ def shop(request):
     prod = {'allproducts':allproducts}
     return render(request, 'shop.html', prod)
 
+def productview(request, name):
+    # To get the products by filtering add .first after fetching from database
+    allproducts = Products.objects.filter(name=name).first()
+    # All the products will be fetched using filters. They will have a additional extension of url in urls.py with may be either str, id, etc .
+    prod = {'allproducts': allproducts}
+    return render(request, 'productview.html', prod)
+
+
 def contact(request):
     if request.method == "POST":
         name = request.POST.get('name')
