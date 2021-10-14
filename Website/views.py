@@ -23,6 +23,9 @@ def productview(request, name):
     prod = {'allproducts': allproducts}
     return render(request, 'productview.html', prod)
 
+def cart(request):
+    return render(request, 'cart.html')
+
 
 def contact(request):
     if request.method == "POST":

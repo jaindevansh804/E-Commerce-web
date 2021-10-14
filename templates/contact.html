@@ -30,14 +30,15 @@
         <li class="nav-item">
           <a class="nav-link active" href="/contact/">Contact</a>
         </li>
-        <li class="nav-item">
+        {% comment %} <li class="nav-item">
           <a class="nav-link active" href="#">Cart(<span id="cart">0</span>)</a>
-        </li>
+        </li> {% endcomment %}
         </ul>
       <form class="d-flex">
         <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
         <button class="btn btn-outline-success" type="submit">Search</button>
       </form>
+      <button type="button" class="btn btn-primary mx-2" data-bs-toggle="popover" title="Your Products in Cart" data-bs-content="xyz">Cart (<span id="cart">0</span>)</button>
     </div>
   </div>
 </nav>
@@ -83,7 +84,10 @@
 
 
 
-
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.2/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-kQtW33rZJAHjgefvhyyzcGF3C5TFyBQBA13V1RKPf4uH+bwyzQxZ6CmMZHmNBEfJ"
+    crossorigin="anonymous"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script>
   if(localStorage.getItem('cart') == null){
@@ -108,9 +112,11 @@
   localStorage.setItem('cart', JSON.stringify(cart));
   document.getElementById('cart').innerHTML = Object.keys(cart).length;
   });
+  var popoverTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="popover"]'))
+  var popoverList = popoverTriggerList.map(function (popoverTriggerEl) {
+  return new bootstrap.Popover(popoverTriggerEl)
+})
   </script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-kQtW33rZJAHjgefvhyyzcGF3C5TFyBQBA13V1RKPf4uH+bwyzQxZ6CmMZHmNBEfJ" crossorigin="anonymous"></script>
-
 
 
 </body>

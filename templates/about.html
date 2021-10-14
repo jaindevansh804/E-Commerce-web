@@ -1,19 +1,22 @@
 <!doctype html>
 <html lang="en">
-  <head>
-    <!-- Required meta tags -->
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <!-- Bootstrap CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-uWxY/CJNBR+1zjPWmfnSnVxwRheevXITnMqoEIeG1LJrdI0GlVs/9cVSyPYXdcSF" crossorigin="anonymous">
+<head>
+  <!-- Required meta tags -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title>About</title>
-  </head>
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.2/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-uWxY/CJNBR+1zjPWmfnSnVxwRheevXITnMqoEIeG1LJrdI0GlVs/9cVSyPYXdcSF" crossorigin="anonymous">
+
+  <title>About</title>
+</head>
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
   <div class="container-fluid">
     <a class="navbar-brand" href="/">E-Commerce</a>
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+      aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
@@ -30,17 +33,19 @@
         <li class="nav-item">
           <a class="nav-link" href="/contact/">Contact</a>
         </li>
-         <li class="nav-item">
+        {% comment %} <li class="nav-item">
           <a class="nav-link active" href="#">Cart(<span id="cart">0</span>)</a>
-        </li>
-        </ul>
+        </li> {% endcomment %}
+      </ul>
       <form class="d-flex">
         <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
         <button class="btn btn-outline-success" type="submit">Search</button>
       </form>
+      <button type="button" class="btn btn-primary mx-2" data-bs-toggle="popover" title="Your Products in Cart" data-bs-content="xyz">Cart (<span id="cart">0</span>)</button>
     </div>
   </div>
 </nav>
+
 <body>
 
 
@@ -52,36 +57,45 @@
 
 
 
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.2/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-kQtW33rZJAHjgefvhyyzcGF3C5TFyBQBA13V1RKPf4uH+bwyzQxZ6CmMZHmNBEfJ"
+    crossorigin="anonymous"></script>
 
 
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-    <script>
-  if(localStorage.getItem('cart') == null){
-  var cart = {};
-  }
-  else
-  {
-  cart = JSON.parse(localStorage.getItem('cart'));
-  document.getElementById('cart').innerHTML = Object.keys(cart).length;
-  }
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script>
+    if (localStorage.getItem('cart') == null) {
+      var cart = {};
+    }
+    else {
+      cart = JSON.parse(localStorage.getItem('cart'));
+      document.getElementById('cart').innerHTML = Object.keys(cart).length;
+    }
 
-  $('.cart').click(function(){
-  var idstr = this.id.toString();
-  if (cart[idstr] != undefined){
-  cart[idstr] = cart[idstr] + 1;
-  }
-  else
-  {
-    cart[idstr] = 1;
-  }
-  console.log(cart);
-  localStorage.setItem('cart', JSON.stringify(cart));
-  document.getElementById('cart').innerHTML = Object.keys(cart).length;
-  });
+    $('.cart').click(function () {
+      var idstr = this.id.toString();
+      if (cart[idstr] != undefined) {
+        cart[idstr] = cart[idstr] + 1;
+      }
+      else {
+        cart[idstr] = 1;
+      }
+      console.log(cart);
+      localStorage.setItem('cart', JSON.stringify(cart));
+      document.getElementById('cart').innerHTML = Object.keys(cart).length;
+    });
+    var popoverTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="popover"]'))
+  var popoverList = popoverTriggerList.map(function (popoverTriggerEl) {
+  return new bootstrap.Popover(popoverTriggerEl)
+})
   </script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-kQtW33rZJAHjgefvhyyzcGF3C5TFyBQBA13V1RKPf4uH+bwyzQxZ6CmMZHmNBEfJ" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.2/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-kQtW33rZJAHjgefvhyyzcGF3C5TFyBQBA13V1RKPf4uH+bwyzQxZ6CmMZHmNBEfJ"
+    crossorigin="anonymous"></script>
 
 
 
 </body>
+
 </html>
