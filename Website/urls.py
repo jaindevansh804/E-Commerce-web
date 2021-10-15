@@ -24,5 +24,6 @@ urlpatterns = [
     #The products will be fetched from database as per their name. These will be fetched using <str:name> after the url. name will be same which is given in views of product view in the def function.
     path('productview/<str:name>/', views.productview, name='productview'),
     path('cart/', views.cart, name='cart'),
-    path('contact/', views.contact, name='contact')
+    path('contact/', views.contact, name='contact'),
+    path('checkout/', views.checkout, name = 'checkout')
 ]

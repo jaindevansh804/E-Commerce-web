@@ -1,5 +1,5 @@
 from django.shortcuts import render, HttpResponse
-from Website.models import Products, Contact
+from Website.models import Products, Contact, Order
 
 # The name of the project is Website
 
@@ -26,6 +26,23 @@ def productview(request, name):
 def cart(request):
     return render(request, 'cart.html')
 
+def checkout(request):
+    if request.method=="POST":
+        items_json = request.POST.get('itemsJson')
+        name = request.POST.get('name')
+        email = request.POST.get('email')
+        addressline1 = request.POST.get('addressline1')
+        addressline2 = request.POST.get('addressline2')
+        city = request.POST.get('city')
+        state = request.POST.get('state')
+        zip_code = request.POST.get('zip_code')
+        phone = request.POST.get('phone')
+        order = Order(items_json=items_json, name=name, email=email, addressline1=addressline1, addressline2=addressline2, city=city, state=state, zip_code=zip_code, phone=phone)
+        order.save()
+        # If this order is true then thank will become true. then the javascipt will capture order from the user and send to database.
+        thank = True
+        return render(request, 'checkout.html', {'thank':thank})
+    return render(request, 'checkout.html')
 
 def contact(request):
     if request.method == "POST":

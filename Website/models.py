@@ -21,3 +21,19 @@ class Contact(models.Model):
 
     def __str__(self):
         return self.name
+
+class Order(models.Model):
+    order_id = models.AutoField(primary_key=True)
+    items_json = models.CharField(max_length=5000)
+    name = models.CharField(max_length=1000)
+    email = models.EmailField(max_length=500)
+    addressline1 = models.TextField()
+    addressline2 = models.TextField()
+    city = models.CharField(max_length=500)
+    state = models.CharField(max_length=200)
+    zip_code = models.IntegerField()
+    phone = models.IntegerField()
+
+    def __str__(self):
+        return "You received new order from" + self.name
+

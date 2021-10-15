@@ -1,22 +1,19 @@
-<!doctype html>
 <html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
 
-<head>
-  <!-- Required meta tags -->
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Bootstrap CSS -->
+    {% comment %} <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-uWxY/CJNBR+1zjPWmfnSnVxwRheevXITnMqoEIeG1LJrdI0GlVs/9cVSyPYXdcSF" crossorigin="anonymous"> {% endcomment %}
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
 
-  <!-- Bootstrap CSS -->
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.2/dist/css/bootstrap.min.css" rel="stylesheet"
-    integrity="sha384-uWxY/CJNBR+1zjPWmfnSnVxwRheevXITnMqoEIeG1LJrdI0GlVs/9cVSyPYXdcSF" crossorigin="anonymous">
-
-  <title>About</title>
-</head>
+    <title>Shop</title>
+  </head>
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
   <div class="container-fluid">
     <a class="navbar-brand" href="/">E-Commerce</a>
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
-      aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
@@ -25,23 +22,19 @@
           <a class="nav-link" aria-current="page" href="/">Home</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link active" href="about/">About</a>
+          <a class="nav-link" href="/about/">About</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="/shop/">Shop</a>
+          <a class="nav-link active" href="/shop/">Shop</a>
         </li>
         <li class="nav-item">
           <a class="nav-link" href="/contact/">Contact</a>
         </li>
-        {% comment %} <li class="nav-item">
-          <a class="nav-link active" href="#">Cart(<span id="cart">0</span>)</a>
-        </li> {% endcomment %}
-      </ul>
-      <form class="d-flex">
-        <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-        <button class="btn btn-outline-success" type="submit">Search</button>
-      </form>
-      <button type="button" class="btn btn-primary mx-2" data-bs-toggle="popover" title="Your Products in Cart" data-bs-content="xyz">Cart (<span id="cart">0</span>)</button>
+        </ul>
+        <button type="button" class="btn btn-primary mx-2" id="popcart" data-container="body" data-toggle="popover" data-placement="bottom" data-html="true" data-content="Your items in cart:">Cart (<span id="cart">0</span>)
+        </button>
+      
+    
     </div>
   </div>
 </nav>
@@ -57,45 +50,65 @@
 
 
 
-<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.2/dist/js/bootstrap.bundle.min.js"
-    integrity="sha384-kQtW33rZJAHjgefvhyyzcGF3C5TFyBQBA13V1RKPf4uH+bwyzQxZ6CmMZHmNBEfJ"
-    crossorigin="anonymous"></script>
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js" integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js" integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k" crossorigin="anonymous"></script>
 
 
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-  <script>
-    if (localStorage.getItem('cart') == null) {
-      var cart = {};
+
+<script>
+  if(localStorage.getItem('cart') == null){
+  var cart = {};
+  }
+  else
+  {
+  cart = JSON.parse(localStorage.getItem('cart'));
+  updateCart(cart);
+  }
+
+  $('#popcart').popover();
+  updatePopover(cart);
+  function updatePopover(cart)
+  {
+    console.log("inside popover");
+    var popStr = "";
+    popStr = popStr + "<h5>Items in Cart</h5><div class='mx-2'>";
+    var i = 1;
+    for (var item in cart){
+      popStr = popStr + '<b>' + i + '</b>. ';
+      popStr = popStr + document.getElementById('name' + item).innerHTML + " Qty.: " + cart[item] + '<br>';
+      i = i+1;
+      
     }
-    else {
-      cart = JSON.parse(localStorage.getItem('cart'));
-      document.getElementById('cart').innerHTML = Object.keys(cart).length;
-    }
+    popStr = popStr + "</div>" + "<a href='/checkout/'><button class='btn btn-primary' id ='checkout'>Checkout</button></a> <button class='btn btn-primary' onclick='clearCart()' id ='clearCart'>Clear Cart</button>"
+    document.getElementById('popcart').setAttribute('data-content', popStr);
+    $('#popcart').popover('show');
+  }
 
-    $('.cart').click(function () {
-      var idstr = this.id.toString();
-      if (cart[idstr] != undefined) {
-        cart[idstr] = cart[idstr] + 1;
-      }
-      else {
-        cart[idstr] = 1;
-      }
-      console.log(cart);
-      localStorage.setItem('cart', JSON.stringify(cart));
-      document.getElementById('cart').innerHTML = Object.keys(cart).length;
-    });
-    var popoverTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="popover"]'))
-  var popoverList = popoverTriggerList.map(function (popoverTriggerEl) {
-  return new bootstrap.Popover(popoverTriggerEl)
-})
+  function clearCart(){
+    cart = JSON.parse(localStorage.getItem('cart'));
+    for (var item in cart){
+      document.getElementById('div' +item).innerHTML = '<button id="' + item + '" class="btn btn-primary cart">Add To Cart</button>'
+    }
+      localStorage.clear();
+      cart = {};
+      updateCart(cart);
+  }
+
+  function updateCart(cart){
+    var sum = 0;
+  for(var item in cart){
+    sum = sum + cart[item];
+    document.getElementById('div'+item).innerHTML = "<button id='minus" + item + "' class='btn btn-primary minus'> - </button> <span id='val" + item + "''>" + cart[item] + "</span> <button id='plus" + item + "'class='btn btn-primary plus'> + </button>";
+  }
+  localStorage.setItem('cart', JSON.stringify(cart));
+  document.getElementById('cart').innerHTML = Object.keys(cart).length;
+  updatePopover(cart);
+}
+
+
+
   </script>
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.2/dist/js/bootstrap.bundle.min.js"
-    integrity="sha384-kQtW33rZJAHjgefvhyyzcGF3C5TFyBQBA13V1RKPf4uH+bwyzQxZ6CmMZHmNBEfJ"
-    crossorigin="anonymous"></script>
-
-
-
+  
 </body>
-
 </html>
