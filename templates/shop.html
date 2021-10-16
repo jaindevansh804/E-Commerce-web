@@ -64,8 +64,7 @@
   <div class="card-body">
     <h5 class="card-title" id = "namepr{{allproducts.id}}">{{allproducts.name}}</h5>
     <p class="card-text">{{allproducts.description|slice:50}}</p>
-    <h6 class="card-title">Rs.{{allproducts.price}}</h6>
-
+    <h6 class="card-title">Rs. : <span id="pricepr{{allproducts.id}}">{{allproducts.price}}</span></h6>
     <span id="divpr{{allproducts.id}}" class="divpr">
     <button class="btn btn-primary cart" id="pr{{allproducts.id}}">Add to Cart</button></a>
     </span>
@@ -104,7 +103,8 @@
   {
     qty = 1;
     name = document.getElementById('name'+idstr).innerHTML;
-    cart[idstr] = [qty, name];
+    price = document.getElementById('price'+idstr).innerHTML;
+    cart[idstr] = [qty, name, parseInt(price)];
   }
   updateCart(cart);
   });

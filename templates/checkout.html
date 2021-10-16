@@ -45,6 +45,10 @@
 <ol class="list-group list-group-numbered" id="items">
 </ol><br><br>
 
+{% comment %} <span id="totalPrice"></span> {% endcomment %}
+<div class="alert alert-dark"><h5>Thank for shooping with us. Please continue to make Payment to place your order. Your total price is &#x20b9;  <span id="totalPrice" role="alert">.</h5>
+</span></div>
+
 <h1>Step 2 : Enter Your Details</h1>
 <form action='/checkout/' method='post'>{% csrf_token %}
 <input type="hidden" name="itemsJson" id="itemsJson"> 
@@ -154,6 +158,8 @@
   }
 console.log(cart);
 
+var sum = 0;
+var totalPrice = 0;
 if ($.isEmptyObject(cart)){
   mystr = `<h4>Your Cart is Empty! Please add some items to your cart to proceed for checkout.</h4>`
   $('#items').append(mystr);
@@ -162,12 +168,16 @@ else{
 for (item in cart){
   let name = cart[item][1];
   let qty = cart[item][0];
+  let itemPrice = cart[item][2];
+  sum = sum + qty;
+  totalPrice = totalPrice + qty* itemPrice
   mystr = `<h6><li class="list-group-item d-flex justify-content-between align-items-start">
     ${name}
     <span class="badge bg-primary rounded-pill">${qty}</span></h6>`
   $('#items').append(mystr);
   }
 }
+document.getElementById('totalPrice').innerHTML = totalPrice;
 // To know the the number and name of product in the admin orders page in django
 $('#itemsJson').val(JSON.stringify(cart));
 {% if thank %}
