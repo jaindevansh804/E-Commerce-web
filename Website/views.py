@@ -1,6 +1,9 @@
 from django.shortcuts import render, HttpResponse
 from Website.models import Products, Contact, Order
+from django.views.decorators.csrf import csrf_exempt
+from PayTm import checksum
 
+MERCHANT_KEY = "TEAO4DJH6#aUtDu%"
 # The name of the project is Website
 
 
@@ -29,6 +32,7 @@ def cart(request):
 def checkout(request):
     if request.method=="POST":
         items_json = request.POST.get('itemsJson')
+        amount = request.POST.get('amount')
         name = request.POST.get('name')
         email = request.POST.get('email')
         addressline1 = request.POST.get('addressline1')
@@ -37,11 +41,26 @@ def checkout(request):
         state = request.POST.get('state')
         zip_code = request.POST.get('zip_code')
         phone = request.POST.get('phone')
-        order = Order(items_json=items_json, name=name, email=email, addressline1=addressline1, addressline2=addressline2, city=city, state=state, zip_code=zip_code, phone=phone)
+        order = Order(items_json=items_json, amount=amount, name=name, email=email, addressline1=addressline1, addressline2=addressline2, city=city, state=state, zip_code=zip_code, phone=phone)
         order.save()
         # If this order is true then thank will become true. then the javascipt will capture order from the user and send to database.
         thank = True
-        return render(request, 'checkout.html', {'thank':thank})
+        # return render(request, 'checkout.html', {'thank':thank})
+               # return render(request, 'shop/checkout.html', {'thank':thank, 'id': id})
+    #request paytm to transfer the amount to your account after payment by user
+        param_dict={
+
+            'MID': 'EhyATy76742463875004',
+            'ORDER_ID': str(order.order_id),
+            'TXN_AMOUNT': str(amount),
+            'CUST_ID': email,
+            'INDUSTRY_TYPE_ID': 'Retail',
+            'WEBSITE': 'WEBSTAGING',
+            'CHANNEL_ID': 'WEB',
+            'CALLBACK_URL':'http://127.0.0.1:8000/handlerequest/',
+        }
+        param_dict['CHECKSUMHASH'] = checksum.generate_checksum(param_dict, MERCHANT_KEY)
+        return render(request, "paytm.html", {'param_dict' : param_dict})
     return render(request, 'checkout.html')
 
 def contact(request):
@@ -54,3 +73,8 @@ def contact(request):
         details = Contact(name=name, email=email, mobile=mobile, subject=subject, message=message)
         details.save()
     return render(request, 'contact.html')
+
+@csrf_exempt
+def handlerequest(request):
+    return HttpResponse('done.')
+    pass

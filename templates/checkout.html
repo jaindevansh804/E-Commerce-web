@@ -52,6 +52,7 @@
 <h1>Step 2 : Enter Your Details</h1>
 <form action='/checkout/' method='post'>{% csrf_token %}
 <input type="hidden" name="itemsJson" id="itemsJson"> 
+<input type="hidden" name="amount" id="amount">
 <!-- to capture the  items ordered; input tag contains the items ordered which are hidden from user. -->
   <div class="form-row">
     <div class="form-group col-md-6">
@@ -184,6 +185,7 @@ $('#itemsJson').val(JSON.stringify(cart));
 alert('Thank you for ordering with us.')
 localStorage.clear();
 {% endif %}
+$('#amount').val($('#totalPrice').html())
 </script>
 
 </body>

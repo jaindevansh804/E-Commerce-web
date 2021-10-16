@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Redirecting...</title>
+</head>
+<body>
+<h1>Redirecting you to Payment Gateway.....<br><br.
+Please Do Not Refresh This Page.</h1>
+
+<form action="https://securegw-stage.paytm.in/theia/processTransaction" method="post", name="paytm">
+
+{% for key,value in param_dict.items %}
+<input type="hidden" name="{{key}}" value="{{value}}">
+{% endfor %}
+</form>
+</body>
+<script>
+document.paytm.submit()
+</script>
