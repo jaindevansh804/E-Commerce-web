@@ -1,9 +1,9 @@
 from django.shortcuts import render, HttpResponse
 from Website.models import Products, Contact, Order
 from django.views.decorators.csrf import csrf_exempt
-from PayTm import checksum
+from PayTm import Checksum
 
-MERCHANT_KEY = "TEAO4DJH6#aUtDu%"
+MERCHANT_KEY = "G5#sU8Iu&M16kOTf"
 # The name of the project is Website
 
 
@@ -43,14 +43,12 @@ def checkout(request):
         phone = request.POST.get('phone')
         order = Order(items_json=items_json, amount=amount, name=name, email=email, addressline1=addressline1, addressline2=addressline2, city=city, state=state, zip_code=zip_code, phone=phone)
         order.save()
-        # If this order is true then thank will become true. then the javascipt will capture order from the user and send to database.
-        thank = True
         # return render(request, 'checkout.html', {'thank':thank})
-               # return render(request, 'shop/checkout.html', {'thank':thank, 'id': id})
-    #request paytm to transfer the amount to your account after payment by user
+    
+        #request paytm to transfer the amount to your account after payment by user
         param_dict={
 
-            'MID': 'EhyATy76742463875004',
+            'MID': 'SPTpoA80997673245579',
             'ORDER_ID': str(order.order_id),
             'TXN_AMOUNT': str(amount),
             'CUST_ID': email,
@@ -59,7 +57,7 @@ def checkout(request):
             'CHANNEL_ID': 'WEB',
             'CALLBACK_URL':'http://127.0.0.1:8000/handlerequest/',
         }
-        param_dict['CHECKSUMHASH'] = checksum.generate_checksum(param_dict, MERCHANT_KEY)
+        param_dict['CHECKSUMHASH'] = Checksum.generate_checksum(param_dict, MERCHANT_KEY)
         return render(request, "paytm.html", {'param_dict' : param_dict})
     return render(request, 'checkout.html')
 
@@ -76,5 +74,18 @@ def contact(request):
 
 @csrf_exempt
 def handlerequest(request):
-    return HttpResponse('done.')
-    pass
+    form = request.POST
+    response_dict = {}
+    for i in form.keys():
+        response_dict[i] = form[i]
+        if i == "CHECKSUMHASH":
+            checksum = form[i]
+
+    verify = Checksum.verify_checksum(response_dict, MERCHANT_KEY, checksum)
+    if verify:
+        if response_dict['RESPCODE'] == "01":
+            print('ORDER SUCCESSFUL')
+        else:
+            print('ORDER FAILURE. PLEASE TRY AGAIN' + response_dict['RESPMSG'])
+
+    return render(request, 'paymentstatus.html', {'response':response_dict})
